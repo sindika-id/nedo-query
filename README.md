@@ -1,6 +1,6 @@
-# NedoQuery
+# Nedo Query
 
-NedoQuery is a laravel library written in pure PHP and providing a set of classes that allow you to make Nedo Web Platform API call via http/https.
+Nedo Query is a laravel library written in pure PHP and providing a set of classes that allow you to make Nedo Web Platform API call via http/https.
 
 ## Documentation
 
@@ -12,7 +12,7 @@ NedoQuery is a laravel library written in pure PHP and providing a set of classe
          composer require sindika-id/nedo-query
       ```
   2. From the projects root folder run ```composer update```
-  5. Add the Nedo API credentials to ``` /.env  ```
+  3. Add the Nedo API credentials to ``` /.env  ```
      * Example:
 
       ```
@@ -23,4 +23,4 @@ NedoQuery is a laravel library written in pure PHP and providing a set of classe
 
 ## License
 
-NedoQuery is licensed under the [MIT license](https://opensource.org/licenses/MIT). Enjoy!
+Nedo Query is licensed under the [MIT license](https://opensource.org/licenses/MIT). Enjoy!
