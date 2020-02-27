@@ -1,0 +1,27 @@
+{
+    "name": "sindika-id/nedo-query",
+    "description": "Nedo Http Query Bridge",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Willy Achmat Fauzi",
+            "email": "willy.achmat@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nedoquery\\Api\\NedoqueryServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
