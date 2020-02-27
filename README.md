@@ -1,4 +1,4 @@
-# nedo-query
+# NedoQuery
 
 NedoQuery is a laravel library written in pure PHP and providing a set of classes that allow you to make Nedo Web Platform API call via http/https.
 
@@ -20,8 +20,6 @@ NedoQuery is a laravel library written in pure PHP and providing a set of classe
             NEDO_SERVICE_CODE=YOURSERVICECODE
             NEDO_SERVICE_SECRET=YOURSECRET
       ```
-
-
 
 ## License
 
