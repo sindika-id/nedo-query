@@ -102,7 +102,12 @@ class NedoRequest {
 
     public function get(){
         $params = $this->compileParam();
-        $result = $this->request($this->from . '/index.mod', $params, $this->header);
+        if (count($this->header) == 0){
+            $result = $this->request($this->from . '/index.mod', $params, [], TRUE);
+        }
+        else{
+            $result = $this->request($this->from . '/index.mod', $params, $this->header);
+        }
         
         $this->reset();
         return $result;
