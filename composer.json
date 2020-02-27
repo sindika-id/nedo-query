@@ -2,10 +2,11 @@
     "name": "sindika-id/nedo-query",
     "description": "Nedo Http Query Bridge",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Willy Achmat Fauzi",
-            "email": "willy.achmat@gmail.com"
+            "name": "PT. Sinergi Dimensi Informatika",
+            "email": "support@sindika.co.id"
         }
     ],
     "require": {
