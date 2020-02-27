@@ -13,6 +13,8 @@ class NedoRequest {
     private $filter = null;
     private $advsearch = [];
     private $order = [];
+    
+    private $header = [];
 
     public function __construct($config) {
         $this->config = $config;
@@ -23,6 +25,23 @@ class NedoRequest {
         return $this->config;
     }
     
+    public function addTokenHeader($token){
+        $this->header['Triton-token'] = $token;
+    }
+    
+    public function addRole($role_id){
+        $this->header['Triton-role'] = $role_id;
+    }
+    
+    /**
+     * 
+     * @param \Illuminate\Auth\GenericUser $user
+     */
+    public function setUser($user){
+        $this->addTokenHeader($user->user_token);
+        $this->addRole($user->user_role->role_id);
+    }
+
     public function request($url, $params, $header = [], $attachConfig = false){
         return $this->connection->request($url, $params, $header, $attachConfig);
     }
@@ -38,8 +57,8 @@ class NedoRequest {
                 }
             }
             else {
-                if (!in_array(trim($f), $this->select)){
-                    $this->select[] = $f;
+                if (!in_array(trim($fields), $this->select)){
+                    $this->select[] = $fields;
                 }
             }
         }
@@ -83,7 +102,7 @@ class NedoRequest {
 
     public function get(){
         $params = $this->compileParam();
-        $result = $this->request($this->from . '/index.mod', $params);
+        $result = $this->request($this->from . '/index.mod', $params, $this->header);
         
         $this->reset();
         return $result;
