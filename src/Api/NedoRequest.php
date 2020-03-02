@@ -116,6 +116,7 @@ class NedoRequest {
     private function compileParam(){
         $params = [];
         $params['select'] = $this->select;
+        $params['ws'] = TRUE;
         
         if ($this->filter != null){
             $params['filter'] = $this->filter;
