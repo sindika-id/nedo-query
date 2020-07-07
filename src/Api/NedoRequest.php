@@ -15,6 +15,7 @@ class NedoRequest {
     private $order = [];
     
     private $header = [];
+    private $root = null;
 
     public function __construct($config) {
         $this->config = $config;
@@ -99,6 +100,11 @@ class NedoRequest {
         $this->filter = $text;
         return $this;
     }
+    
+    public function root($field){
+        $this->root = $field;
+        return $this;
+    }
 
     public function get(){
         $params = $this->compileParam();
@@ -110,6 +116,20 @@ class NedoRequest {
         }
         
         $this->reset();
+        
+        if ($this->root != null){
+            $t_result = [];
+            $root_name = $this->root;
+            foreach($result->rows as $r){
+                if (!isset($t_result[$r->$root_name])){
+                    $t_result[$r->$root_name] = [];
+                }
+                $t_result[$r->$root_name][] = $r;
+            }
+            
+            $result->rows = $t_result;
+        }
+        
         return $result;
     }
     
