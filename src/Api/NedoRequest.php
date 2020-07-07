@@ -143,7 +143,7 @@ class NedoRequest {
             $params['advsearch'] = [$opLogical];
         }
         if ($this->order != []){
-            $params['order'] = $this->order;
+            $params['sorter'] = $this->order;
         }
         
         return $params;
