@@ -112,10 +112,8 @@ class NedoRequest {
             $result = $this->request($this->from . '/index.mod', $params, [], TRUE);
         }
         else{
-            $result = $this->request($this->from . '/index.mod', $params, $this->header);
+            $result = $this->request($this->from . '/index.mod', $params, $this->header, TRUE);
         }
-        
-        $this->reset();
         
         if ($this->root != null){
             $t_result = [];
@@ -130,6 +128,7 @@ class NedoRequest {
             $result->rows = $t_result;
         }
         
+        $this->reset();
         return $result;
     }
     
@@ -174,5 +173,8 @@ class NedoRequest {
         $this->from = null;
         $this->filter = null;
         $this->advsearch = [];
+        $this->order = [];
+        $this->header = [];
+        $this->root = null;
     }
 }
