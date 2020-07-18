@@ -22,6 +22,10 @@ class NedoRequest {
         $this->connection = new NedoConnection($config['domain'], $config['service_code'], $config['service_secret']);
     }
 
+    public function getFile($path){
+        return $this->connection->getFile($path);
+    }
+    
     public function getConfig(){
         return $this->config;
     }

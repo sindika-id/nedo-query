@@ -15,6 +15,13 @@ class NedoConnection {
     }
 
 
+    public function getFile($path){
+        $full_url = "plugin.json?plugin=db_file&id=" . $path;
+        $result = $this->request($full_url, [], [], TRUE, FALSE);
+        
+        return $result;
+    }
+
     public function request($url, $params = [], $header = [], $attachConfig = true, $jsonEncode = true){
         $full_url = $this->base_url . '/' . $url;
         if ($attachConfig){
