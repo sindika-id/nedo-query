@@ -19,6 +19,7 @@ Nedo Query is a laravel library written in pure PHP and providing a set of class
             NEDO_DOMAIN=http://YOURNEDODOMAIN/index.php
             NEDO_SERVICE_CODE=YOURSERVICECODE
             NEDO_SERVICE_SECRET=YOURSECRET
+            NEDO_USER_TYPE=YOURNEDOUSERTYPE
       ```
 
 ## License
