@@ -39,18 +39,28 @@ class NedoRequest {
     }
     
     /**
-     * 
      * @param \Illuminate\Auth\GenericUser $user
      */
     public function setUser($user){
         $this->addTokenHeader($user->user_token);
         $this->addRole($user->user_role->role_id);
     }
+    
+    public function customRequest($url, $params){
+        return $this->request($url, $params, $this->header);
+    }
 
-    public function request($url, $params, $header = [], $attachConfig = false){
-        return $this->connection->request($url, $params, $header, $attachConfig);
+    public function request($url, $params, $header = [], $attachConfig = FALSE, $requestMethod = 'POST'){
+        return $this->connection->request($url, $params, $header, $attachConfig, $requestMethod);
     }
     
+    public function load($from, $primary_key){
+        if (count($this->header) == 0){
+            return $this->request($from . '/update.mod', ['primary_key' => $primary_key], [], TRUE, 'GET');
+        }
+        return $this->request($from . '/update.mod', ['primary_key' => $primary_key], $this->header, FALSE, 'GET');
+    }
+
     public function select($fields){
         if (is_string($fields)){
             if (strpos($fields, ',') > 0){
@@ -76,6 +86,17 @@ class NedoRequest {
         return $this;
     }
     
+    public function insert($page, $object){
+        $result = $this->request($page . '/insert.mod', ['_json' => json_encode($object)], $this->header);
+        
+        return $result;
+    }
+    public function update($page, $object, $primary_key){
+        $result = $this->request($page . '/update.mod', ['_json' => json_encode($object), 'primary_key' => $primary_key], $this->header);
+        
+        return $result;
+    }
+
     public function from($from){
         $this->from = $from;
         return $this;
@@ -116,7 +137,7 @@ class NedoRequest {
             $result = $this->request($this->from . '/index.mod', $params, [], TRUE);
         }
         else{
-            $result = $this->request($this->from . '/index.mod', $params, $this->header, TRUE);
+            $result = $this->request($this->from . '/index.mod', $params, $this->header, FALSE);
         }
         
         if ($this->root != null){
@@ -178,7 +199,6 @@ class NedoRequest {
         $this->filter = null;
         $this->advsearch = [];
         $this->order = [];
-        $this->header = [];
         $this->root = null;
     }
 }

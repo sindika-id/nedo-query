@@ -17,12 +17,12 @@ class NedoConnection {
 
     public function getFile($path){
         $full_url = "plugin.json?plugin=db_file&id=" . $path;
-        $result = $this->request($full_url, [], [], TRUE, FALSE);
+        $result = $this->request($full_url, [], [], TRUE, 'POST', FALSE);
         
         return $result;
     }
 
-    public function request($url, $params = [], $header = [], $attachConfig = true, $jsonEncode = true){
+    public function request($url, $params = [], $header = [], $attachConfig = true, $requestMethod = 'POST', $jsonEncode = true){
         $full_url = $this->base_url . '/' . $url;
         if ($attachConfig){
             $this->attachConfig($params);
@@ -34,11 +34,16 @@ class NedoConnection {
                 $header_formated[] = $k . ': ' . $v;
             }
         }
-        
-        $result = $this->curlRequest($full_url, $params, $header_formated);
-        
+        $result = null;
+        if ($requestMethod == 'POST'){
+            $result = $this->curlRequest($full_url, $params, $header_formated);
+        }
+        else{
+            $result = $this->curlGetRequest($full_url, $params, $header_formated);
+        }
         if ($jsonEncode){
-            return json_decode($result);
+            $jsonResult = json_decode($result);
+            return $jsonResult;
         }
         
         return $result;
@@ -70,6 +75,23 @@ class NedoConnection {
         return $result;
     }
     
+    public function curlGetRequest($url, $params, $headers = null){
+        $post_string = $this->getPostString($params);
+        $normalize_url = $this->normalizeUrl($url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $normalize_url . '?' . $post_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        if ($headers != null){
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        return $result;
+    }
+
     private function normalizeUrl($url){
         return str_replace(' ', '%20', $url);
     }
