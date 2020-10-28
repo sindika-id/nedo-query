@@ -2,6 +2,8 @@
 
 namespace Nedoquery\Api;
 
+use Illuminate\Http\Request;
+
 class NedoConnection {
     
     private $base_url;
@@ -20,6 +22,45 @@ class NedoConnection {
         $result = $this->request($full_url, [], [], TRUE, 'POST', FALSE);
         
         return $result;
+    }
+    
+    public function uploadFile(Request $request, $target_url, $attachment_name){
+        
+        if ($request->hasFile($attachment_name)) {
+            $attachment = $request->file($attachment_name);
+            $mime = $attachment->getClientMimeType();
+            $upload_path = public_path('uploads/attachment');
+
+            $file_name = $attachment->getClientOriginalName();
+            $attachment->move($upload_path, $file_name);
+            $file_path = $upload_path . '/' . $file_name;
+            
+            $value = "@{$file_path};filename=" . $file_name . ";type=" . $mime;
+            
+            if (function_exists('curl_file_create')) {
+                $value = curl_file_create($file_path, $mime, $file_path);
+            }
+            
+            $full_url = $this->base_url . '/' . $target_url;
+            $params = array(
+                $attachment_name => $value
+            );
+            
+            $this->attachConfig($params);
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $full_url);
+            curl_setopt($ch, CURLOPT_POST, 3);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            return json_decode($result);
+        }
+        
+        return (object)['success' => false, 'code' => 404, 'message' => 'File Not Found', 'data' => null];
     }
 
     public function request($url, $params = [], $header = [], $attachConfig = true, $requestMethod = 'POST', $jsonEncode = true){

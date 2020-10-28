@@ -2,6 +2,8 @@
 
 namespace Nedoquery\Api;
 
+use Illuminate\Http\Request;
+
 class NedoRequest {
     
     private $config;
@@ -24,6 +26,10 @@ class NedoRequest {
 
     public function getFile($path){
         return $this->connection->getFile($path);
+    }
+    
+    public function uploadFile(Request $request, $target_url, $attachment_name){
+        return $this->connection->uploadFile($request, $target_url, $attachment_name);
     }
     
     public function getConfig(){
