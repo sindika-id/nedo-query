@@ -53,7 +53,14 @@ class NedoRequest {
     }
     
     public function customRequest($url, $params){
-        return $this->request($url, $params, $this->header);
+        $result = [];
+        if (count($this->header) == 0){
+            $result = $this->request($url, $params, [], TRUE);
+        }
+        else{
+            $result = $this->request($url, $params, $this->header, FALSE);
+        }
+        return $result;
     }
 
     public function request($url, $params, $header = [], $attachConfig = FALSE, $requestMethod = 'POST'){
