@@ -29,7 +29,7 @@ class NedoConnection {
         if ($request->hasFile($attachment_name)) {
             $attachment = $request->file($attachment_name);
             $mime = $attachment->getClientMimeType();
-            $upload_path = public_path('uploads/attachment');
+            $upload_path = storage_path('uploads/attachment');
 
             $file_name = $attachment->getClientOriginalName();
             $attachment->move($upload_path, $file_name);
