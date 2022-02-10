@@ -15,6 +15,8 @@ class NedoRequest {
     private $filter = null;
     private $advsearch = [];
     private $order = [];
+    private $limit = null;
+    private $page = null;
     
     private $header = [];
     private $root = null;
@@ -143,6 +145,16 @@ class NedoRequest {
         $this->root = $field;
         return $this;
     }
+    
+    public function limit($count){
+        $this->limit = $count;
+        return $this;
+    }
+    
+    public function page($index){
+        $this->page = $index;
+        return $this;
+    }
 
     public function get(){
         $params = $this->compileParam();
@@ -202,6 +214,12 @@ class NedoRequest {
         if ($this->order != []){
             $params['sorter'] = $this->order;
         }
+        if ($this->limit != null){
+            $params['limit'] = $this->limit;
+        }
+        if ($this->page != null){
+            $params['page'] = $this->page;
+        }
         
         return $params;
     }
@@ -213,5 +231,7 @@ class NedoRequest {
         $this->advsearch = [];
         $this->order = [];
         $this->root = null;
+        $this->limit = null;
+        $this->page = null;
     }
 }
